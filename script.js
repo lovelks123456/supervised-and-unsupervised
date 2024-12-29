@@ -306,7 +306,7 @@ function showQuestion() {
 // Timer reset function
 function resetTimer() {
     clearInterval(timerInterval);
-    let timeLeft = 30;
+    let timeLeft = 40;
     timerElement.textContent = `Time Left: ${timeLeft}s`;
 
     timerInterval = setInterval(() => {
