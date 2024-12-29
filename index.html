@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQS ON SUPERVISED, UNSPERVISED AND SEQUENTIAL LEARNING</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <p class="heading-txt">MCQS ON SUPERVISED, UNSPERVISED AND SEQUENTIAL LEARNING</p>
+
+        <!-- User Information Section -->
+        <div id="user-info">
+            <label for="name" style="font-weight: bold;">Name:</label>
+<input type="text" id="name" placeholder="Enter your name"><br><br>
+<label for="roll" style="font-weight: bold;">Roll Number:</label>
+<input type="text" id="roll" placeholder="Enter your roll number"><br><br>
+<button id="start-quiz" style="font-weight: bold;">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz-section" style="display: none;">
+            <p id="timer"></p>
+            <div class="question">
+                <span id="question-number"></span>
+                <span id="question-txt"></span>
+            </div>
+            <div class="option-container">
+                <input type="radio" name="opt" id="opt1">
+                <label for="opt1" id="option1"></label>
+                <input type="radio" name="opt" id="opt2">
+                <label for="opt2" id="option2"></label>
+                <input type="radio" name="opt" id="opt3">
+                <label for="opt3" id="option3"></label>
+                <input type="radio" name="opt" id="opt4">
+                <label for="opt4" id="option4"></label>
+            </div>
+            <input type="button" value="Next" id="next-button">
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

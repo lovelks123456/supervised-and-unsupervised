@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <p class="heading-txt">Your Score</p>
+        <h1 id="score"></h1>
+
+        <div>
+            <button id="download-pdf">Download PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Retrieve data from localStorage
+        const name = localStorage.getItem("name") || "N/A";
+        const roll = localStorage.getItem("roll") || "N/A";
+        const score = localStorage.getItem("score");
+        const totalQuestions = localStorage.getItem("totalQuestions");
+        const quizData = JSON.parse(localStorage.getItem("quizData"));
+        const userAnswers = JSON.parse(localStorage.getItem("userAnswers"));
+
+        // Display the score
+        if (score && totalQuestions) {
+            document.getElementById("score").innerHTML = `${score}/${totalQuestions}`;
+        } else {
+            document.getElementById("score").innerHTML = "Score data unavailable";
+        }
+
+        // Function to generate and download PDF
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            // Add title
+            pdf.setFont("Arial", "bold");
+            pdf.setFontSize(16);
+            pdf.text("MCQs TEST Result", 105, 10, { align: "center" });
+
+            // Add candidate information
+            pdf.setFontSize(12);
+            pdf.setFont("Arial", "bold");
+            pdf.text(`Name:`, 10, 20);
+            pdf.setFont("Arial", "normal");
+            pdf.text(`${name}`, 30, 20);
+
+            pdf.setFont("Arial", "bold");
+            pdf.text(`Roll Number:`, 10, 30);
+            pdf.setFont("Arial", "normal");
+            pdf.text(`${roll}`, 40, 30);
+
+            // Add questions and answers
+            let y = 40;
+            quizData.forEach((question, index) => {
+                const correctAnswer = question[question.correct];
+                const userAnswer = userAnswers[index];
+
+                // Question text
+                pdf.setFont("Arial", "bold");
+                pdf.text(`${index + 1}. ${question.question}`, 10, y);
+                y += 10;
+
+                // Options
+                ["opt1", "opt2", "opt3", "opt4"].forEach((key) => {
+                    const isCorrect = key === question.correct;
+                    const isSelected = key === userAnswer;
+
+                    // Highlight correct answer in green
+                    if (isCorrect) {
+                        pdf.setTextColor(0, 128, 0); // Green for correct answer
+                        pdf.setFont("Arial", "bold");
+                    } else {
+                        pdf.setTextColor(0, 0, 0); // Default black for others
+                        pdf.setFont("Arial", "normal");
+                    }
+
+                    // Mark selected option
+                    const selectedIndicator = isSelected ? "(Your Answer)" : "";
+                    pdf.text(`- ${question[key]} ${isCorrect ? "[Correct]" : ""} ${selectedIndicator}`, 15, y);
+                    y += 8;
+                });
+
+                y += 5;
+                if (y > 280) {
+                    pdf.addPage();
+                    y = 10;
+                }
+            });
+
+            // Add total score
+			
+            pdf.setTextColor(0, 0, 0); // Reset text color
+            pdf.setFont("Arial", "bold");
+            pdf.setFontSize(14);
+            pdf.text(`Total Score: ${score}/${totalQuestions}`, 105, y, { align: "center" });
+
+            // Save the PDF
+            pdf.save("MCQ_TEST_Results.pdf");
+        }
+
+        // Add event listener to the download button
+        document.getElementById("download-pdf").addEventListener("click", generatePDF);
+    </script>
+</body>
+</html>
